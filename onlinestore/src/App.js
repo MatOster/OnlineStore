@@ -7,7 +7,9 @@ import ShopPage from './pages/shop/shop.components'
 import Header from './components/header/header.component'
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
 import {auth, createUserProfileDocument } from './components/firebase/firebase.utils.js'
-import  setCurrentUser from './redux/user/user.action'
+import {selectCurrentUser} from './redux/user/user.selectors'
+import setCurrentUser from './redux/user/user.action'
+import CheckoutPage from './pages/checkout/checkout.component'
 class App extends React.Component{
   
   unsubscribeFromAuth = null;
@@ -44,6 +46,8 @@ class App extends React.Component{
 
       <Route exact path = '/' component = {HomePage} />
       <Route  path = '/shop' component = {ShopPage} />
+      <Route  path = '/checkout' component = {CheckoutPage} />
+
       <Route  exact path = '/signin' 
       render = {()=>
           this.props.currentUser ? (
@@ -58,8 +62,8 @@ const mapDispatchToProps = (dispatch)=>({
   setCurrentUser: user => dispatch( setCurrentUser(user))
 })
 
-const mapStatetoProps  = ({user})=>({
-  currentUser: user.currentUser
+const mapStatetoProps  = (state)=>({
+  currentUser: selectCurrentUser(state)
 })
 
 export default connect(mapStatetoProps, mapDispatchToProps)(App);
